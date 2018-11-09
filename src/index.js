@@ -6,7 +6,7 @@ const majorRanks = "0 The Fool, 1 The Magician, 2 The High Priestess, 3 The Empr
 );
 
 //0=swords,1=cups,2=staffs,3=coins
-
+var card;
 const cards = new Array(79);
 //Here's probably where you'd add the properties to each one, right? Make each card an object with a name and a blurb
 
@@ -19,7 +19,8 @@ for (let i = 0; i < cards.length; i++) {
 const getProperties = i => {
   const majorArcana = i > 55; //Was a gotcha here, it was registering the Fool as a part of the minor arcana, whoops
   //Hmm, little tricky. How do I properly set the rank to continue on past 14, and also not to lable a card as a King?
-  const rank = majorArcana ? value : i % 14;
+  //I tried using indexOf already
+  const rank = majorArcana ? cards.indexOf(i - 56) : i % 14;
   const value = majorArcana ? i - 56 : rank + 1; //Because it needs to start at two
   const suit = majorArcana ? 4 : (i / 14) | 0;
   //const color = suit % 2 ? "red" : "black";
@@ -27,6 +28,7 @@ const getProperties = i => {
   //return {rank, value, suit, majorArcana};
 };
 
+const single = document.createElement("single");
 const pre = document.createElement("pre");
 
 pre.textContent = JSON.stringify(cards.map(getProperties), null, 2);
@@ -35,6 +37,15 @@ document.body.appendChild(pre);
 
 const sort = cards => {
   for (let i = 0; i < cards.length; i++) {}
+};
+
+const pickAcard = cards => {
+  //Ok so this is returning a number instead of a value. Something about JSON.
+  //var rand = cards[Math.floor(Math.random() * cards.length)];
+  var rand = cards[8];
+  var card = cards[rand];
+  console.log(card);
+  return card;
 };
 
 const shuffle = cards => {
@@ -49,6 +60,8 @@ const shuffle = cards => {
 
 setTimeout(() => {
   console.log(cards);
-  shuffle(cards);
+  //single.textContent = JSON.stringify(card);
+  // shuffle(cards);
+  pickAcard(cards);
   pre.textContent = JSON.stringify(cards.map(getProperties), null, 2);
 }, 1000);
